@@ -51,5 +51,15 @@ namespace lab3
             });
             return assignmentsList;
         }
+
+        public void SetAssignmentGrade(int assignmentNumber , int grade)
+        {
+            Array.ForEach(this.Assignments, (assignment) => {
+                if (assignment.Number == assignmentNumber)
+                {
+                    assignment.Grade = grade;
+                }
+            });
+        }
     }
 }

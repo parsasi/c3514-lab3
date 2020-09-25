@@ -1,53 +1,7 @@
 ﻿using System;
-using System.Linq;
 
 namespace lab3
 {
-    class Course
-    {
-        public static Student[] Students;
-        public static void AddStudents(Student[] students){
-            Students = students;
-        }
-
-        public static void GenerateAssignments()
-        {
-            foreach(Student student in Students)
-            {
-                Assignment assignment1 = new Assignment(1, "Assignment 1", 1);
-                Assignment assignment2 = new Assignment(2, "Assignment 2", 1);
-                Assignment assignment3 = new Assignment(3, "Assignment 3", 1);
-
-                Assignment[] assignments = { assignment1, assignment2, assignment3 };
-
-                student.AddAssignments(assignments);
-            }
-        }
-
-        public static string GetStudentsList()
-        {
-            string studentsList = "";
-            Array.ForEach(Course.Students, (student) => {
-                studentsList = string.Concat(studentsList , "\n" , $"Student ID: {student.GetId(),2} | " , $"Name: {student.Name}");
-            });
-            return studentsList;
-        }
-
-        public static double? GetStudentAverage(int studentId)
-        {
-            double? studentAverage = null;
-            Array.ForEach(Course.Students, (student) => {
-                if (student.GetId() == studentId)
-                {
-                    studentAverage = student.CalculateAverage();
-                    return;
-                }
-            });
-            return studentAverage;
-        }
-    }
-
-
     class GradingTest
     {
         static void Main(string[] args)
@@ -77,24 +31,19 @@ namespace lab3
                     int studentId = int.Parse(Console.ReadLine());
 
                     Console.WriteLine("\nChoose an assignment number: ");
-                    Array.ForEach(Course.Students, (student) => {
-                        if (student.GetId() == studentId)
-                        {
-                            Console.WriteLine(student.GetAssignmentsList());
 
-                            Console.Write($"\nAssignment number: ");
+                    var student = Course.GetStudent(studentId);
 
-                            int assignmentNumber = int.Parse(Console.ReadLine());
-                            Array.ForEach(student.Assignments, (assignment) => {
-                                if (assignment.Number == assignmentNumber)
-                                {
-                                    Console.Write($"Enter grade: ");
-                                    int grade = int.Parse(Console.ReadLine());
-                                    assignment.Grade = grade;
-                                }
-                            });
-                        }
-                    });
+                    Console.WriteLine(student.GetAssignmentsList());
+
+                    Console.Write($"\nAssignment number: ");
+
+                    int assignmentNumber = int.Parse(Console.ReadLine());
+                    
+                    Console.Write($"Enter grade: ");
+                    int grade = int.Parse(Console.ReadLine());
+                    student.SetAssignmentGrade(assignmentNumber, grade);
+                     
                 }
                 else if (option == 2)
                 {
@@ -117,19 +66,10 @@ namespace lab3
                     else if (subOption == 2)
                     {
                         Console.WriteLine("\nChoose an assignment: ");
-                        Array.ForEach(Course.Students[0].Assignments, (assignment) => {
-                            Console.WriteLine($"{assignment.Name} | Grade: {assignment.Grade}");
-                        });
+                        Console.WriteLine(Course.GetAllAssignmentsList());
 
-                        int[] assignmentGrades = new int[3];
                         int assignmentNumber = int.Parse(Console.ReadLine());
-                        for (int counter = 0; counter < Course.Students.Length; ++counter)
-                        {
-                            assignmentGrades[counter] = Course.Students[counter].Assignments[assignmentNumber].Grade;
-                        }
-                        int total = assignmentGrades.Aggregate((total,grade) => total += grade );
-                        double average = total / assignmentGrades.Length;
-
+                        double average = Course.CalculateAssignmentsAverage(assignmentNumber);
                         Console.WriteLine($"Average Grade of Assignment {assignmentNumber}: {average:F}");
                     }
                 }
