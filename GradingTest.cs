@@ -80,9 +80,7 @@ namespace lab3
                     Array.ForEach(Course.Students, (student) => {
                         if (student.GetId() == studentId)
                         {
-                            Array.ForEach(student.Assignments, (assignment) => {
-                                Console.WriteLine($"{assignment.Name} | Grade: {assignment.Grade}");
-                            });
+                            Console.WriteLine(student.GetAssignmentsList());
 
                             Console.Write($"\nAssignment number: ");
 

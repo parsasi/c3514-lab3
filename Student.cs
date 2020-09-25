@@ -42,5 +42,14 @@ namespace lab3
             }
             return sum / allWeights;
         }
+
+        public string GetAssignmentsList()
+        {
+            string assignmentsList = "";
+            Array.ForEach(this.Assignments, (assignment) => {
+                assignmentsList = string.Concat(assignmentsList , $"{assignment.Name} | Grade: {assignment.Grade}" , "\n");
+            });
+            return assignmentsList;
+        }
     }
 }
